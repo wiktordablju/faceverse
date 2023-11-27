@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Rejestracja użytkownika</title>
+</head>
+<body>
+    <div class="registration-form">
+        <h2>Rejestracja</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Zarejestruj się</button>
+        </form>
+    </div>
+
+    <div>
+        <h1>Siema</h1>
+        {% if user_name %}
+            <p>Zalogowany jako: {{ user_name }}</p>
+        {% else %}
+            <p>Nie jesteś zalogowany.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
