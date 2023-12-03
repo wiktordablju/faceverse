@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Strona Powitalna</title>
+</head>
+<body>
+    <h1>Witaj na Stronie Powitalnej</h1>
+    <h2>Logowanie</h2>
+     <form method="post" action="{% url 'welcome' %}">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Zaloguj się</button>
+    </form>
+    <p>Nie masz konta? <a href="{% url 'register' %}">Zarejestruj się</a></p>
+
+</body>
+</html>

@@ -5,16 +5,14 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Strona główna</title>
+    <title></title>
 </head>
 <body>
-    <div class="test">
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Login</button>
-        </form>
-    </div>
-    <a href="{% url 'registration' %}">Zarejestruj sie</a>
+ {% if user.is_authenticated %}
+        <p>Cześć, jesteś zalogowany jako {{ user.username }}</p>
+        <a href="{% url 'logout' %}">Wyloguj</a>
+    {% else %}
+        <p>Nie jesteś zalogowany.</p>
+    {% endif %}
 </body>
 </html>
