@@ -28,3 +28,19 @@ def home(request):
 def logout_view(request):
     logout(request)
     return redirect('welcome')
+
+
+@login_required
+def groups(request):
+    return render(request, 'core/groups.html')
+
+
+@login_required
+def friends(request):
+    return render(request, 'core/friends.html')
+
+
+@login_required
+def profile(request):
+    return render(request, 'core/profile.html')
+
