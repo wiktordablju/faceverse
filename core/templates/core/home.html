@@ -11,6 +11,20 @@
  {% if user.is_authenticated %}
         <p>Cześć, jesteś zalogowany jako {{ user.username }}</p>
         <a href="{% url 'logout' %}">Wyloguj</a>
+        <nav>
+        <ul>
+            <li><a href="{% url 'home' %}">Strona główna</a></li>
+            <li><a href="{% url 'groups' %}">Grupy</a></li>
+            <li><a href="{% url 'friends' %}">Moi znajomi</a></li>
+            <li><a href="{% url 'profile' %}">Mój profil</a></li>
+        </ul>
+        </nav>
+
+    <form action="" method="post">
+        {% csrf_token %}
+        <input type="text" name="post_content" placeholder="Co u Ciebie?">
+        <button type="submit">Opublikuj</button>
+    </form>
     {% else %}
         <p>Nie jesteś zalogowany.</p>
     {% endif %}

@@ -1,5 +1,4 @@
 ### todo:
-- logowanie rejestracja
 - wrzucanie postow na swoj wall
 - tworzenie grup i na grupach wrzucanie postow
 - zarzadzanie swoim kontem + zdjecie profilowe
