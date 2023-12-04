@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import logout, login, authenticate
+from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
+from post_management.forms import PostForm
+from post_management.models import Post
 
 
 def welcome(request):
@@ -13,34 +15,19 @@ def welcome(request):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('home')
+                return redirect('core:home')
     else:
         form = AuthenticationForm()
 
     return render(request, 'core/welcome.html', {'form': form})
 
 
-@login_required(login_url='welcome')
+@login_required(login_url='core:welcome')
 def home(request):
-    return render(request, 'core/home.html')
-
-
-def logout_view(request):
-    logout(request)
-    return redirect('welcome')
-
-
-@login_required
-def groups(request):
-    return render(request, 'core/groups.html')
-
-
-@login_required
-def friends(request):
-    return render(request, 'core/friends.html')
-
-
-@login_required
-def profile(request):
-    return render(request, 'core/profile.html')
-
+    posts = Post.objects.all().order_by('-created_at')  # Pobierz wszystkie posty i uporządkuj od najnowszego
+    form = PostForm()
+    context = {
+        'form': form,
+        'posts': posts
+    }
+    return render(request, 'core/home.html', context)

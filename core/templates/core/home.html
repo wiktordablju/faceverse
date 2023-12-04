@@ -5,28 +5,58 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title></title>
+    <title>Strona Główna</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
 </head>
 <body>
- {% if user.is_authenticated %}
-        <p>Cześć, jesteś zalogowany jako {{ user.username }}</p>
-        <a href="{% url 'logout' %}">Wyloguj</a>
+<script>
+    var likePostUrl = '{% url "post_management:like_post" %}';
+    var csrfToken = '{{ csrf_token }}';
+</script>
+
+    {% if user.is_authenticated %}
         <nav>
-        <ul>
-            <li><a href="{% url 'home' %}">Strona główna</a></li>
-            <li><a href="{% url 'groups' %}">Grupy</a></li>
-            <li><a href="{% url 'friends' %}">Moi znajomi</a></li>
-            <li><a href="{% url 'profile' %}">Mój profil</a></li>
-        </ul>
+            <ul>
+                <li><a href="{% url 'core:home' %}">Strona główna</a></li>
+                <li><a href="{% url 'group_management:groups' %}">Grupy</a></li>
+                <li><a href="{% url 'user_management:friends' %}">Moi znajomi</a></li>
+                <li><a href="{% url 'user_management:profile' %}">Mój profil</a></li>
+            </ul>
         </nav>
 
-    <form action="" method="post">
-        {% csrf_token %}
-        <input type="text" name="post_content" placeholder="Co u Ciebie?">
-        <button type="submit">Opublikuj</button>
-    </form>
+        <form method="post" action="{% url 'post_management:create_post' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Opublikuj</button>
+        </form>
+
+            {% for post in posts %}
+                <div class="post">
+                    <p>{{ post.author }} <small>{{ post.created_at }}</small></p>
+                    <p>{{ post.content }}</p>
+                    <button id="like-button-{{ post.id }}" type="button" onclick="likePost({{ post.id }});">Lubię to!</button>
+                    <span id="like-count-{{ post.id }}">{{ post.likes.count }}</span>
+
+                        {% for comment in post.comments.all %}
+                                <strong>{{ comment.author.username }}</strong> <small>{{ comment.created_at }}</small>
+                                <p>{{ comment.content }}</p>
+                        {% endfor %}
+
+                        <form action="{% url 'post_management:add_comment_to_post' post.id %}" method="post">
+                            {% csrf_token %}
+                            <input type="text" name="content" placeholder="Dodaj komentarz...">
+                            <button type="submit">Komentuj</button>
+                        </form>
+                </div>
+            {% empty %}
+                <p>Brak postów do wyświetlenia.</p>
+            {% endfor %}
     {% else %}
         <p>Nie jesteś zalogowany.</p>
     {% endif %}
+
+    {% load static %}
+    <script src="{% static 'js/likes.js' %}"></script>
 </body>
 </html>
