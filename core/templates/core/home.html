@@ -5,18 +5,16 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title></title>
+    <title>Essa Homepage</title>
 </head>
 <body>
  {% if user.is_authenticated %}
-        <p>Cześć, jesteś zalogowany jako {{ user.username }}</p>
-        <a href="{% url 'logout' %}">Wyloguj</a>
         <nav>
         <ul>
-            <li><a href="{% url 'home' %}">Strona główna</a></li>
-            <li><a href="{% url 'groups' %}">Grupy</a></li>
-            <li><a href="{% url 'friends' %}">Moi znajomi</a></li>
-            <li><a href="{% url 'profile' %}">Mój profil</a></li>
+            <li><a href="{% url 'core:home' %}">Strona główna</a></li>
+            <li><a href="{% url 'group_management:groups' %}">Grupy</a></li>
+            <li><a href="{% url 'user_management:friends' %}">Moi znajomi</a></li>
+            <li><a href="{% url 'user_management:profile' %}">Mój profil</a></li>
         </ul>
         </nav>
 

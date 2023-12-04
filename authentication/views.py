@@ -9,7 +9,7 @@ def register(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('/')  # Przekierowanie po udanej rejestracji
+            return redirect('/profile')
     else:
         form = UserCreationForm()
     return render(request, 'authentication/register.html', {'form': form})
