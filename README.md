@@ -5,3 +5,4 @@
 - zarzadzanie grupa + zdjecie grupy
 - mozliwosc tworzenia znajomych
 - jak mi sie bedzie nudzilo to wiadomosci
+- dodatkowe rzeczy do posta jak tagowanie ludzi czy dodawanie zdjec

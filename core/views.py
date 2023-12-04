@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
+from post_management.forms import PostForm
+from post_management.models import Post
 
 
 def welcome(request):
@@ -22,4 +24,10 @@ def welcome(request):
 
 @login_required(login_url='core:welcome')
 def home(request):
-    return render(request, 'core/home.html')
+    posts = Post.objects.all().order_by('-created_at')  # Pobierz wszystkie posty i uporządkuj od najnowszego
+    form = PostForm()
+    context = {
+        'form': form,
+        'posts': posts
+    }
+    return render(request, 'core/home.html', context)
