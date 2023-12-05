@@ -24,10 +24,11 @@ def welcome(request):
 
 @login_required(login_url='core:welcome')
 def home(request):
-    posts = Post.objects.all().order_by('-created_at')  # Pobierz wszystkie posty i uporządkuj od najnowszego
+    # Pobierz tylko posty, których jesteś autorem
+    user_posts = Post.objects.filter(author=request.user).order_by('-created_at')
     form = PostForm()
     context = {
         'form': form,
-        'posts': posts
+        'posts': user_posts  # Przekaż tylko posty autora do kontekstu
     }
     return render(request, 'core/home.html', context)
