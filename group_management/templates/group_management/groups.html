@@ -14,5 +14,11 @@
             <li><a href="{% url 'user_management:profile' %}">Mój profil</a></li>
         </ul>
         </nav>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Utwórz grupę</button>
+</form>
+
 </body>
 </html>
