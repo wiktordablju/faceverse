@@ -9,11 +9,7 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/home.css' %}">
 </head>
-<body>
-<script>
-    var likePostUrl = '{% url "post_management:like_post" %}';
-    var csrfToken = '{{ csrf_token }}';
-</script>
+<body data-like-post-url="{% url 'post_management:like_post' %}" data-csrf-token="{{ csrf_token }}">
 
     {% if user.is_authenticated %}
         <nav>
@@ -32,26 +28,31 @@
         </form>
 
             {% for post in posts %}
-                <div class="post">
-                    <p>{{ post.author }} <small>{{ post.created_at }}</small></p>
-                    <p>{{ post.content }}</p>
-                    <button id="like-button-{{ post.id }}" type="button" onclick="likePost({{ post.id }});">Lubię to!</button>
-                    <span id="like-count-{{ post.id }}">{{ post.likes.count }}</span>
+    <div class="post">
+        <p>{{ post.author }} <small>{{ post.created_at }}</small></p>
+        <p>{{ post.content }}</p>
 
-                        {% for comment in post.comments.all %}
-                                <strong>{{ comment.author.username }}</strong> <small>{{ comment.created_at }}</small>
-                                <p>{{ comment.content }}</p>
-                        {% endfor %}
+        {% if post.group %}
+            <p>Grupa: {{ post.group.name }}</p>
+        {% endif %}
 
-                        <form action="{% url 'post_management:add_comment_to_post' post.id %}" method="post">
-                            {% csrf_token %}
-                            <input type="text" name="content" placeholder="Dodaj komentarz...">
-                            <button type="submit">Komentuj</button>
-                        </form>
-                </div>
-            {% empty %}
-                <p>Brak postów do wyświetlenia.</p>
-            {% endfor %}
+        <button id="like-button-{{ post.id }}" type="button" onclick="likePost({{ post.id }});">Lubię to!</button>
+        <span id="like-count-{{ post.id }}">{{ post.likes.count }}</span><br>
+
+        {% for comment in post.comments.all %}
+            {{ comment.author.username }} <span>  </span> {{ comment.created_at }}
+            <p>{{ comment.content }}</p>
+        {% endfor %}
+
+        <form action="{% url 'post_management:add_comment_to_post' post.id %}" method="post">
+            {% csrf_token %}
+            <input type="text" name="content" placeholder="Dodaj komentarz...">
+            <button type="submit">Komentuj</button>
+        </form>
+    </div>
+{% empty %}
+    <p>Brak postów do wyświetlenia.</p>
+{% endfor %}
     {% else %}
         <p>Nie jesteś zalogowany.</p>
     {% endif %}

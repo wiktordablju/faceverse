@@ -4,11 +4,11 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function likePost(postId) {
-    fetch(likePostUrl, { // Use the variable from the HTML template
+    fetch(likePostUrl, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
-            'X-CSRFToken': csrfToken // Use the variable from the HTML template
+            'X-CSRFToken': csrfToken
         },
         body: 'id=' + postId
     })
