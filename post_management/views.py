@@ -8,16 +8,22 @@ from group_management.models import Group
 
 
 def create_post(request):
+    redirect_url = request.META.get('HTTP_REFERER', 'user_management:profile')
+
     if request.method == 'POST':
         form = PostForm(request.POST)
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
             post.save()
-            return redirect('core:home')
+            return redirect(redirect_url)  # Przekieruj na poprzednią stronę
     else:
         form = PostForm()
-    return render(request, 'core/home.html', {'form': form})
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'post_management/create_post.html', context)
 
 
 @login_required

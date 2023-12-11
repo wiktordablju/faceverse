@@ -32,7 +32,6 @@
         <p>{{ post.author }} <small>{{ post.created_at }}</small></p>
         <p>{{ post.content }}</p>
 
-        <!-- Dodanie nazwy grupy (jeśli post należy do grupy) -->
         {% if post.group %}
             <p>Grupa: {{ post.group.name }}</p>
         {% endif %}
