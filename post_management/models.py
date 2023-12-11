@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from group_management.models import Group
 
 
 class Post(models.Model):
@@ -8,6 +9,7 @@ class Post(models.Model):
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     likes = models.ManyToManyField(User, related_name='liked_posts', blank=True)
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return self.content[:50]

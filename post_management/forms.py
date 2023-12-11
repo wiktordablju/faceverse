@@ -12,3 +12,9 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ['content']
+
+
+class GroupPostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ['content', 'group']

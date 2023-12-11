@@ -17,8 +17,11 @@
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Utwórz grupę</button>
+    <button type="submit">Opublikuj</button>
 </form>
+{% for group in groups %}
+    <p><a href="{% url 'group_management:group_detail' group.id %}">{{ group.name }}</a></p>
+{% endfor %}
 
 </body>
 </html>

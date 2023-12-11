@@ -5,29 +5,24 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Strona Główna</title>
+    <title>Grupy</title>
     {% load static %}
-    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <link rel="stylesheet" href="{% static 'css/group_detail.css' %}">
 </head>
 <body data-like-post-url="{% url 'post_management:like_post' %}" data-csrf-token="{{ csrf_token }}">
 
-    {% if user.is_authenticated %}
-        <nav>
-            <ul>
-                <li><a href="{% url 'core:home' %}">Strona główna</a></li>
-                <li><a href="{% url 'group_management:groups' %}">Grupy</a></li>
-                <li><a href="{% url 'user_management:friends' %}">Moi znajomi</a></li>
-                <li><a href="{% url 'user_management:profile' %}">Mój profil</a></li>
-            </ul>
-        </nav>
 
-        <form method="post" action="{% url 'post_management:create_post' %}">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Opublikuj</button>
-        </form>
+<h1>{{ group.name }}</h1>
+<p><a href="{% url 'group_management:groups' %}">Wróc do strony grup</a></p>
+<p>{{ group.description }}</p>
 
-            {% for post in posts %}
+<form method="post" action="{% url 'post_management:create_group_post' group.id %}">
+    {% csrf_token %}
+    {{ post_form.as_p }}
+    <button type="submit">Opublikuj Post</button>
+</form>
+
+{% for post in posts %}
                 <div class="post">
                     <p>{{ post.author }} <small>{{ post.created_at }}</small></p>
                     <p>{{ post.content }}</p>
@@ -48,11 +43,12 @@
             {% empty %}
                 <p>Brak postów do wyświetlenia.</p>
             {% endfor %}
-    {% else %}
-        <p>Nie jesteś zalogowany.</p>
-    {% endif %}
 
     {% load static %}
+<script>
+var likePostUrl = '{% url "post_management:like_post" %}';
+var csrfToken = '{{ csrf_token }}';
+</script>
     <script src="{% static 'js/likes.js' %}"></script>
+
 </body>
-</html>
