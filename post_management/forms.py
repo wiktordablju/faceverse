@@ -17,4 +17,4 @@ class CommentForm(forms.ModelForm):
 class GroupPostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['content', 'group']
+        fields = ['content']

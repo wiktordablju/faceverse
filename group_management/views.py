@@ -24,15 +24,15 @@ def groups(request):
 @login_required
 def group_detail(request, group_id):
     group = Group.objects.get(id=group_id)
-    posts = Post.objects.filter(group=group).order_by('-created_at')  # Pobieranie postów dla tej grupy
-    post_form = GroupPostForm(initial={'group': group})
+    posts = Post.objects.filter(group=group).order_by('-created_at')
+    post_form = GroupPostForm()
 
     if request.method == 'POST':
         post_form = GroupPostForm(request.POST)
         if post_form.is_valid():
             post = post_form.save(commit=False)
             post.author = request.user
-            post.group = group
+            post.group = group  # Ustawienie grupy bezpośrednio w widoku
             post.save()
             return redirect('group_management:group_detail', group_id=group.id)
 
