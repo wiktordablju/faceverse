@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
 from .forms import PostForm, CommentForm, GroupPostForm
@@ -60,7 +60,7 @@ def add_comment_to_post(request, post_id):
             comment.post = post
             comment.author = request.user
             comment.save()
-            return redirect('core:home')
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER', 'core:home'))
     else:
         form = CommentForm()
     return render(request, 'add_comment_to_post.html', {'form': form})
