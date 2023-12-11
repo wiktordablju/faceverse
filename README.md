@@ -1,5 +1,6 @@
 ### todo:
 
+- test
 - wyswietlanie postow:
     - na profilu tylko ze swojego profilu
     - na stronie glownej profil+grupy+znajomi
