@@ -1,8 +1,9 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from post_management.models import Post
 from .forms import GroupForm
-from .models import Group
+from .models import Group, User
 from post_management.forms import GroupPostForm
 
 
@@ -24,19 +25,22 @@ def groups(request):
 
 @login_required
 def group_detail(request, group_id):
-    group = Group.objects.get(id=group_id)
+    group = get_object_or_404(Group, id=group_id)
     user_is_member = request.user in group.members.all()
-
-    posts = Post.objects.filter(group=group).order_by('-created_at') if user_is_member else []
-    post_form = GroupPostForm()
+    user_is_moderator = request.user in group.moderators.all()
 
     if request.method == 'POST':
         if 'join_group' in request.POST:
-            # Logika dołączania do grupy
             group.members.add(request.user)
             user_is_member = True
+        elif 'promote_member' in request.POST:
+            member_id = request.POST.get('member_id')
+            member_to_promote = get_object_or_404(User, id=member_id)
+
+            if member_to_promote in group.members.all() and not member_to_promote in group.moderators.all():
+                group.moderators.add(member_to_promote)
+                messages.success(request, f'{member_to_promote.username} został awansowany na moderatora.')
         elif user_is_member:
-            # Logika dodawania postu
             post_form = GroupPostForm(request.POST)
             if post_form.is_valid():
                 post = post_form.save(commit=False)
@@ -45,6 +49,18 @@ def group_detail(request, group_id):
                 post.save()
                 return redirect('group_management:group_detail', group_id=group.id)
 
-    return render(request, 'group_management/group_detail.html', {'group': group, 'post_form': post_form, 'posts': posts, 'user_is_member': user_is_member})
+    post_form = GroupPostForm() if user_is_member else None
+    posts = Post.objects.filter(group=group).order_by('-created_at') if user_is_member else []
+    members = group.members.all() if user_is_moderator else None
+
+    return render(request, 'group_management/group_detail.html', {
+        'group': group,
+        'post_form': post_form,
+        'posts': posts,
+        'user_is_member': user_is_member,
+        'user_is_moderator': user_is_moderator,
+        'members': members
+    })
+
 
 
