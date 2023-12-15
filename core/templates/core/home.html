@@ -57,7 +57,10 @@
         <p>Nie jesteś zalogowany.</p>
     {% endif %}
 
-    {% load static %}
+    <script>
+        var likePostUrl = '{% url "post_management:like_post" %}';
+        var csrfToken = '{{ csrf_token }}';
+    </script>
     <script src="{% static 'js/likes.js' %}"></script>
 </body>
 </html>

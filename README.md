@@ -1,6 +1,6 @@
 ### todo:
 
-- test
+
 - wyswietlanie postow:
     - na profilu tylko ze swojego profilu
     - na stronie glownej profil+grupy+znajomi
@@ -9,5 +9,4 @@
 - zarzadzanie swoim kontem + zdjecie profilowe
 - zarzadzanie grupa + zdjecie grupy
 - mozliwosc tworzenia znajomych
-- jak mi sie bedzie nudzilo to wiadomosci
-- dodatkowe rzeczy do posta jak tagowanie ludzi czy dodawanie zdjec, usuwanie posta/koma
+- przetlumaczenie loginow i rejestracji
