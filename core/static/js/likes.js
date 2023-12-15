@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
-    var likePostUrl = document.body.getAttribute('data-like-post-url');
-    var csrfToken = document.body.getAttribute('data-csrf-token');
+    let likePostUrl = document.body.getAttribute('data-like-post-url');
+    let csrfToken = document.body.getAttribute('data-csrf-token');
 });
 
 function likePost(postId) {

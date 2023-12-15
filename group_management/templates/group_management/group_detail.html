@@ -16,11 +16,44 @@
 <p><a href="{% url 'group_management:groups' %}">Wróc do strony grup</a></p>
 <p>{{ group.description }}</p>
 
-<form method="post" action="{% url 'post_management:create_group_post' group.id %}">
-    {% csrf_token %}
-    {{ post_form.as_p }}
-    <button type="submit">Opublikuj Post</button>
-</form>
+{% if user_is_moderator %}
+    <div class="moderator-panel">
+        <h2>Panel Moderatora</h2>
+        <h3>Członkowie Grupy:</h3>
+        <ul>
+            {% for member in members %}
+                <li>
+                    {{ member.username }}
+                    {% if member in group.moderators.all %}
+                        (Moderator)
+                    {% else %}
+                        <form method="post" action="">
+                            {% csrf_token %}
+                            <input type="hidden" name="member_id" value="{{ member.id }}">
+                            <button type="submit" name="promote_member" onclick="return confirm('Czy na pewno chcesz awansować tego użytkownika na moderatora?');">Awansuj na moderatora</button>
+                        </form>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+
+
+{% if user_is_member %}
+    <form method="post" action="{% url 'post_management:create_group_post' group.id %}">
+        {% csrf_token %}
+        {{ post_form.as_p }}
+        <button type="submit">Opublikuj Post</button>
+    </form>
+{% else %}
+    <form method="post" action="">
+        {% csrf_token %}
+        <button type="submit" name="join_group">Dołącz do Grupy</button>
+    </form>
+    <p>Musisz być członkiem grupy, aby publikować posty.</p>
+{% endif %}
+
 
 {% for post in posts %}
                 <div class="post">
