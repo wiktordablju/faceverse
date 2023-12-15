@@ -16,11 +16,20 @@
 <p><a href="{% url 'group_management:groups' %}">Wróc do strony grup</a></p>
 <p>{{ group.description }}</p>
 
-<form method="post" action="{% url 'post_management:create_group_post' group.id %}">
-    {% csrf_token %}
-    {{ post_form.as_p }}
-    <button type="submit">Opublikuj Post</button>
-</form>
+{% if user_is_member %}
+    <form method="post" action="{% url 'post_management:create_group_post' group.id %}">
+        {% csrf_token %}
+        {{ post_form.as_p }}
+        <button type="submit">Opublikuj Post</button>
+    </form>
+{% else %}
+    <form method="post" action="">
+        {% csrf_token %}
+        <button type="submit" name="join_group">Dołącz do Grupy</button>
+    </form>
+    <p>Musisz być członkiem grupy, aby publikować posty.</p>
+{% endif %}
+
 
 {% for post in posts %}
                 <div class="post">

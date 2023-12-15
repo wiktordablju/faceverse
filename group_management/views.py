@@ -15,6 +15,7 @@ def groups(request):
             group = form.save(commit=False)
             group.save()
             group.members.add(request.user)
+            group.moderators.add(request.user)  # Dodanie twórcy jako moderatora
             return redirect('group_management:groups')
     else:
         form = GroupForm()
@@ -24,18 +25,26 @@ def groups(request):
 @login_required
 def group_detail(request, group_id):
     group = Group.objects.get(id=group_id)
-    posts = Post.objects.filter(group=group).order_by('-created_at')
+    user_is_member = request.user in group.members.all()
+
+    posts = Post.objects.filter(group=group).order_by('-created_at') if user_is_member else []
     post_form = GroupPostForm()
 
     if request.method == 'POST':
-        post_form = GroupPostForm(request.POST)
-        if post_form.is_valid():
-            post = post_form.save(commit=False)
-            post.author = request.user
-            post.group = group  # Ustawienie grupy bezpośrednio w widoku
-            post.save()
-            return redirect('group_management:group_detail', group_id=group.id)
+        if 'join_group' in request.POST:
+            # Logika dołączania do grupy
+            group.members.add(request.user)
+            user_is_member = True
+        elif user_is_member:
+            # Logika dodawania postu
+            post_form = GroupPostForm(request.POST)
+            if post_form.is_valid():
+                post = post_form.save(commit=False)
+                post.author = request.user
+                post.group = group
+                post.save()
+                return redirect('group_management:group_detail', group_id=group.id)
 
-    return render(request, 'group_management/group_detail.html', {'group': group, 'post_form': post_form, 'posts': posts})
+    return render(request, 'group_management/group_detail.html', {'group': group, 'post_form': post_form, 'posts': posts, 'user_is_member': user_is_member})
 
 
