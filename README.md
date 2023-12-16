@@ -1,7 +1,6 @@
 ### todo:
 
 - qol
-  - grupy maja linki po nazwie nie id
   - na profilu grupy to linki
 
   

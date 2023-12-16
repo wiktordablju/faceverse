@@ -46,11 +46,11 @@
 
 
 {% if user_is_member %}
-    <form method="post" action="{% url 'post_management:create_group_post' group.id %}">
-        {% csrf_token %}
-        {{ post_form.as_p }}
-        <button type="submit">Opublikuj Post</button>
-    </form>
+    <form method="post" action="{% url 'post_management:create_group_post' group.slug %}">
+    {% csrf_token %}
+    {{ post_form.as_p }}
+    <button type="submit">Opublikuj Post</button>
+</form>
 {% else %}
     <form method="post" action="">
         {% csrf_token %}
@@ -82,10 +82,10 @@
         {% endfor %}
 
         <form action="{% url 'post_management:add_comment_to_post' post.id %}" method="post">
-            {% csrf_token %}
-            <input type="text" name="content" placeholder="Dodaj komentarz...">
-            <button type="submit">Komentuj</button>
-        </form>
+        {% csrf_token %}
+        <input type="text" name="content" placeholder="Dodaj komentarz...">
+        <button type="submit">Komentuj</button>
+    </form>
     </div>
 {% empty %}
     <p>Brak postów do wyświetlenia.</p>

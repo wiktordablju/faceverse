@@ -36,8 +36,8 @@
     <p>{{ post.content }}</p>
 
     {% if post.group %}
-        <p>Grupa: {{ post.group.name }}</p>
-    {% endif %}
+    <p>Grupa: <a href="{% url 'group_management:group_detail' group_slug=post.group.slug %}">{{ post.group.name }}</a></p>
+{% endif %}
 
     <button id="like-button-{{ post.id }}" type="button" onclick="likePost({{ post.id }});">Lubię to!</button>
     <span id="like-count-{{ post.id }}">{{ post.likes.count }}</span><br>

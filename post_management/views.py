@@ -6,7 +6,6 @@ from .forms import PostForm, CommentForm, GroupPostForm
 from .models import Post
 from group_management.models import Group
 
-
 def create_post(request):
     redirect_url = request.META.get('HTTP_REFERER', 'user_management:profile')
 
@@ -25,10 +24,13 @@ def create_post(request):
     }
     return render(request, 'post_management/create_post.html', context)
 
-
 @login_required
-def create_group_post(request, group_id):
-    group = Group.objects.get(id=group_id)
+def create_group_post(request, group_slug):  # Zmienione na 'group_slug'
+    try:
+        group = Group.objects.get(slug=group_slug)  # Użyj sluga grupy
+    except Group.DoesNotExist:
+        raise Http404("Grupa o danym slugu nie istnieje")  # Rzuć wyjątek 404, jeśli grupa nie istnieje
+
     if request.method == 'POST':
         form = GroupPostForm(request.POST)
         if form.is_valid():
@@ -36,12 +38,11 @@ def create_group_post(request, group_id):
             post.author = request.user
             post.group = group
             post.save()
-            return redirect('group_management:group_detail', group_id=group_id)
+            return redirect('group_management:group_detail', group_slug=group_slug)  # Przekieruj na szczegóły grupy
 
     else:
         form = GroupPostForm()
-    return render(request, 'post_management/create_group_post.html', {'form': form, 'group': group})
-
+    return render(request, 'post_management/create_group_post.html', {'form': form, 'group_slug': group_slug})
 
 @login_required
 @require_POST
@@ -55,7 +56,6 @@ def like_post(request):
         post.likes.add(request.user)
         is_liked = True
     return JsonResponse({'likes_count': post.likes.count(), 'is_liked': is_liked})
-
 
 def add_comment_to_post(request, post_id):
     post = get_object_or_404(Post, id=post_id)
