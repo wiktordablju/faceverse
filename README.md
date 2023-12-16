@@ -1,9 +1,6 @@
 ### todo:
 
-- qol 
-  - nie mozesz skomentowac pustym komentarzem
-  - przy tworzeniu nazwa modelu profile to nazwa konta
-  - zapisywany obrazek nazywa sie jak profil ktory go uplouduje
+- qol
   - grupy maja linki po nazwie nie id
   - na profilu grupy to linki
 

@@ -59,14 +59,15 @@ def like_post(request):
 
 def add_comment_to_post(request, post_id):
     post = get_object_or_404(Post, id=post_id)
+
     if request.method == 'POST':
         form = CommentForm(request.POST)
-        if form.is_valid():
+
+        if form.is_valid() and form.cleaned_data['content']:  # Sprawdź, czy pole komentarza nie jest puste
             comment = form.save(commit=False)
             comment.post = post
             comment.author = request.user
             comment.save()
             return HttpResponseRedirect(request.META.get('HTTP_REFERER', 'core:home'))
-    else:
-        form = CommentForm()
-    return render(request, 'add_comment_to_post.html', {'form': form})
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', 'core:home'))
