@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from post_management.models import Post
-from .forms import GroupForm
+from .forms import GroupForm, GroupEditForm
 from .models import Group, User
 from post_management.forms import GroupPostForm
 
@@ -63,4 +63,20 @@ def group_detail(request, group_id):
     })
 
 
+@login_required
+def edit_group(request, group_id):
+    group = get_object_or_404(Group, id=group_id)
 
+    if request.user not in group.moderators.all():
+        return redirect('group_management:group_detail', group_id=group.id)
+
+    if request.method == 'POST':
+        form = GroupEditForm(request.POST, request.FILES, instance=group)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Grupa została zaktualizowana.')
+            return redirect('group_management:group_detail', group_id=group.id)
+    else:
+        form = GroupEditForm(instance=group)
+
+    return render(request, 'group_management/edit_group.html', {'form': form, 'group': group})

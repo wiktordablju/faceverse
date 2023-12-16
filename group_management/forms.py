@@ -6,3 +6,9 @@ class GroupForm(forms.ModelForm):
     class Meta:
         model = Group
         fields = ['name', 'description']
+
+
+class GroupEditForm(forms.ModelForm):
+    class Meta:
+        model = Group
+        fields = ['name', 'description', 'profile_image']

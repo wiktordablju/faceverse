@@ -10,7 +10,11 @@
     <link rel="stylesheet" href="{% static 'css/group_detail.css' %}">
 </head>
 <body data-like-post-url="{% url 'post_management:like_post' %}" data-csrf-token="{{ csrf_token }}">
-
+<div class="group-profile-image-container">
+    {% if group.profile_image %}
+        <img src="{{ group.profile_image.url }}" alt="Zdjęcie Profilowe Grupy {{ group.name }}">
+    {% endif %}
+</div>
 
 <h1>{{ group.name }}</h1>
 <p><a href="{% url 'group_management:groups' %}">Wróc do strony grup</a></p>
@@ -19,6 +23,7 @@
 {% if user_is_moderator %}
     <div class="moderator-panel">
         <h2>Panel Moderatora</h2>
+        <a href="{% url 'group_management:edit_group' group.id %}">Edytuj Grupę</a>
         <h3>Członkowie Grupy:</h3>
         <ul>
             {% for member in members %}

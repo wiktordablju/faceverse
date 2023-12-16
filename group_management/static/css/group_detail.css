@@ -1,3 +1,13 @@
 .post {
 border: 1px solid black;
 }
+
+.group-profile-image-container {
+    background-color: black;
+}
+
+img {
+    max-height: 300px;
+    width: 100%;
+
+}
