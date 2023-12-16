@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Profil</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
 </head>
 <body>
     <h1>        Cześć, jesteś zalogowany jako {{ user.username }}</h1>
@@ -16,6 +18,26 @@
             <li><a href="{% url 'user_management:profile' %}">Mój profil</a></li>
         </ul>
         </nav>
+    <div>
+        <div class="profile-container">
+    <img src="{{ user.profile.profile_image.url }}" alt="Zdjęcie Profilowe">
+    <p>{{ user.username }}</p>
+    <p>{{ user.profile.bio }}</p>
+            </div>
+
+    <a href="{% url 'user_management:edit_profile' %}">Edytuj Profil</a>
+</div>
+
+<div>
+    <h3>Grupy:</h3>
+    <ul>
+        {% for group in user.user_groups.all %}
+            <li>{{ group.name }}</li>
+        {% endfor %}
+    </ul>
+</div>
+
+
 {% block content %}
 
   <form method="post" action="{% url 'post_management:create_post' %}">
@@ -48,5 +70,11 @@
   {% endfor %}
 {% endblock %}
 
+    {% load static %}
+<script>
+var likePostUrl = '{% url "post_management:like_post" %}';
+var csrfToken = '{{ csrf_token }}';
+</script>
+    <script src="{% static 'js/likes.js' %}"></script>
 </body>
 </html>
