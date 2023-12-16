@@ -1,6 +1,5 @@
 ### todo:
 
-- przy postach wyswietla sie twoje profilowe, po kliknieciu przekierowuje cie na profil
 - qol 
   - nie mozesz skomentowac pustym komentarzem
   - przy tworzeniu nazwa modelu profile to nazwa konta
