@@ -11,3 +11,10 @@
   - przy tworzeniu nazwa modelu profile to nazwa konta
   - zapisywany obrazek nazywa sie jak profil ktory go uplouduje
   - grupy maja linki po nazwie nie id
+
+  
+------
+------ 
+
+- przyszlosciowo
+  - wyszukiwarka ludzi

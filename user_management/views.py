@@ -1,7 +1,8 @@
 from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
+from django.shortcuts import render, redirect, get_object_or_404
 from post_management.forms import PostForm
 from post_management.models import Post
 from user_management.forms import ProfileForm, UserEditForm
@@ -23,15 +24,19 @@ def logout_view(request):
 
 
 @login_required(login_url='core:welcome')
-def profile(request):
-    user_posts = Post.objects.filter(author=request.user, group__isnull=True).order_by('-created_at')
+def profile(request, username):
+    user = get_object_or_404(User, username=username)
+    user_posts = Post.objects.filter(author=user, group__isnull=True).order_by('-created_at')
+    user_groups = user.user_groups.all()
     form = PostForm()
-    user_groups = request.user.user_groups.all()  # Pobranie grup, do których należy użytkownik
+    is_own_profile = (request.user == user)
 
     context = {
-        'form': form,
+        'user': user,
         'posts': user_posts,
-        'user_groups': user_groups,  # Dodanie listy grup do kontekstu
+        'user_groups': user_groups,
+        'is_own_profile': is_own_profile,
+        'form': form
     }
     return render(request, 'user_management/profile.html', context)
 

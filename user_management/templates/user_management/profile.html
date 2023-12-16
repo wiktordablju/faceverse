@@ -2,81 +2,82 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Profil</title>
+    <title>Profil użytkownika {{ user.username }}</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/profile.css' %}">
 </head>
 <body>
-    <h1>        Cześć, jesteś zalogowany jako {{ user.username }}</h1>
-            <a href="{% url 'user_management:logout' %}">Wyloguj</a>
+    <h1>Profil: {{ user.username }}</h1>
+    <a href="{% url 'user_management:logout' %}">Wyloguj</a>
 
-<nav>
+    <nav>
         <ul>
             <li><a href="{% url 'core:home' %}">Strona główna</a></li>
             <li><a href="{% url 'group_management:groups' %}">Grupy</a></li>
             <li><a href="{% url 'user_management:friends' %}">Moi znajomi</a></li>
-            <li><a href="{% url 'user_management:profile' %}">Mój profil</a></li>
+            <li><a href="{% url 'user_management:profile' request.user.username %}">Mój profil</a></li>
         </ul>
-        </nav>
-    <div>
-        <div class="profile-container">
-    <img src="{{ user.profile.profile_image.url }}" alt="Zdjęcie Profilowe">
-    <p>{{ user.username }}</p>
-    <p>{{ user.profile.bio }}</p>
-            </div>
+    </nav>
 
-    <a href="{% url 'user_management:edit_profile' %}">Edytuj Profil</a>
-</div>
-
-<div>
-    <h3>Grupy:</h3>
-    <ul>
-        {% for group in user_groups %}
-            <li>{{ group.name }}</li>
-        {% empty %}
-            <li>Nie należysz do żadnych grup.</li>
-        {% endfor %}
-    </ul>
-</div>
-
-
-{% block content %}
-
-  <form method="post" action="{% url 'post_management:create_post' %}">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Opublikuj</button>
-  </form>
-
-  {% for post in posts %}
-    <div class="post">
-      <p>{{ post.author }} <small>{{ post.created_at }}</small></p>
-      <p>{{ post.content }}</p>
-
-      <button id="like-button-{{ post.id }}" type="button" onclick="likePost({{ post.id }});">Lubię to!</button>
-      <span id="like-count-{{ post.id }}">{{ post.likes.count }}</span><br>
-
-      {% for comment in post.comments.all %}
-        {{ comment.author.username }} <span>  </span> {{ comment.created_at }}
-        <p>{{ comment.content }}</p>
-      {% endfor %}
-
-      <form action="{% url 'post_management:add_comment_to_post' post.id %}" method="post">
-        {% csrf_token %}
-        <input type="text" name="content" placeholder="Dodaj komentarz...">
-        <button type="submit">Komentuj</button>
-      </form>
+    <div class="profile-container">
+        <img src="{{ user.profile.profile_image.url }}" alt="Zdjęcie Profilowe">
+        <p>{{ user.username }}</p>
+        <p>{{ user.profile.bio }}</p>
     </div>
-  {% empty %}
-    <p>Brak postów do wyświetlenia.</p>
-  {% endfor %}
-{% endblock %}
 
-    {% load static %}
-<script>
-var likePostUrl = '{% url "post_management:like_post" %}';
-var csrfToken = '{{ csrf_token }}';
-</script>
+    {% if is_own_profile %}
+        <div>
+            <a href="{% url 'user_management:edit_profile' %}">Edytuj Profil</a>
+
+            <form method="post" action="{% url 'post_management:create_post' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Opublikuj</button>
+    </form>
+        </div>
+    {% endif %}
+
+    <div>
+        <h3>Grupy:</h3>
+        <ul>
+            {% for group in user.user_groups.all %}
+                <li>{{ group.name }}</li>
+            {% empty %}
+                <li>{{ user.username }} nie należy do żadnych grup.</li>
+            {% endfor %}
+        </ul>
+    </ul>
+    </div>
+
+    {% block content %}
+        {% for post in posts %}
+            <div class="post">
+                <p>{{ post.author }} <small>{{ post.created_at }}</small></p>
+                <p>{{ post.content }}</p>
+
+                <button id="like-button-{{ post.id }}" type="button" onclick="likePost({{ post.id }});">Lubię to!</button>
+                <span id="like-count-{{ post.id }}">{{ post.likes.count }}</span><br>
+
+                {% for comment in post.comments.all %}
+                    {{ comment.author.username }} <span>  </span> {{ comment.created_at }}
+                    <p>{{ comment.content }}</p>
+                {% endfor %}
+
+                <form action="{% url 'post_management:add_comment_to_post' post.id %}" method="post">
+                    {% csrf_token %}
+                    <input type="text" name="content" placeholder="Dodaj komentarz...">
+                    <button type="submit">Komentuj</button>
+                </form>
+            </div>
+        {% empty %}
+            <p>{% if is_own_profile %}Nie znaleziono Twoich postów.{% else %}Nie znaleziono postów użytkownika {{ user.username }}.{% endif %}</p>
+        {% endfor %}
+    {% endblock %}
+
     <script src="{% static 'js/likes.js' %}"></script>
+    <script>
+        var likePostUrl = '{% url "post_management:like_post" %}';
+        var csrfToken = '{{ csrf_token }}';
+    </script>
 </body>
 </html>
