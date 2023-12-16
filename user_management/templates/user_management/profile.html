@@ -31,8 +31,10 @@
 <div>
     <h3>Grupy:</h3>
     <ul>
-        {% for group in user.user_groups.all %}
+        {% for group in user_groups %}
             <li>{{ group.name }}</li>
+        {% empty %}
+            <li>Nie należysz do żadnych grup.</li>
         {% endfor %}
     </ul>
 </div>

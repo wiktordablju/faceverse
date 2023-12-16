@@ -24,13 +24,14 @@ def logout_view(request):
 
 @login_required(login_url='core:welcome')
 def profile(request):
-    # Pobierz tylko posty użytkownika na jego profilu
     user_posts = Post.objects.filter(author=request.user, group__isnull=True).order_by('-created_at')
     form = PostForm()
+    user_groups = request.user.user_groups.all()  # Pobranie grup, do których należy użytkownik
 
     context = {
         'form': form,
         'posts': user_posts,
+        'user_groups': user_groups,  # Dodanie listy grup do kontekstu
     }
     return render(request, 'user_management/profile.html', context)
 
