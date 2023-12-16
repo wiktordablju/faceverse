@@ -2,26 +2,25 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Grupy</title>
+    <title>Grupy essa</title>
 </head>
 <body>
     <h1>Grupy essa</h1>
-<nav>
+    <nav>
         <ul>
             <li><a href="{% url 'core:home' %}">Strona główna</a></li>
             <li><a href="{% url 'group_management:groups' %}">Grupy</a></li>
             <li><a href="{% url 'user_management:friends' %}">Moi znajomi</a></li>
             <a href="{% url 'user_management:profile' user.username %}">Mój profil</a>
         </ul>
-        </nav>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Opublikuj</button>
-</form>
-{% for group in groups %}
-    <p><a href="{% url 'group_management:group_detail' group.id %}">{{ group.name }}</a></p>
-{% endfor %}
-
+    </nav>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Opublikuj</button>
+    </form>
+    {% for group in groups %}
+        <p><a href="{% url 'group_management:group_detail' group.slug %}">{{ group.name }}</a></p>
+    {% endfor %}
 </body>
 </html>
