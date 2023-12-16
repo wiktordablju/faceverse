@@ -1,6 +1,5 @@
 ### todo:
 
-- przetlumaczenie loginow i rejestracji
 - przy postach wyswietla sie twoje profilowe, po kliknieciu przekierowuje cie na profil
 - qol 
   - nie mozesz skomentowac pustym komentarzem

@@ -56,7 +56,8 @@ def edit_profile(request):
             user_form.save()
             profile_form.save()
             messages.success(request, 'Twój profil został zaktualizowany.')
-            return redirect('user_management:profile')
+            # Zmodyfikowane przekierowanie z nazwą użytkownika
+            return redirect('user_management:profile', username=request.user.username)
     else:
         user_form = UserEditForm(instance=request.user)
         profile_form = ProfileForm(instance=request.user.profile)
@@ -65,6 +66,7 @@ def edit_profile(request):
         'user_form': user_form,
         'profile_form': profile_form
     })
+
 
 
 @login_required
