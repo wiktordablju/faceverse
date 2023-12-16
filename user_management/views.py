@@ -68,7 +68,6 @@ def edit_profile(request):
     })
 
 
-
 @login_required
 @require_POST
 def follow_user(request, username):
@@ -86,6 +85,7 @@ def follow_user(request, username):
 
     followers_count = user_to_follow.followers.count()  # Liczba obserwujących
     return JsonResponse({'status': 'ok', 'action': action, 'followers_count': followers_count})
+
 
 @login_required
 def check_follow_status(request, username):

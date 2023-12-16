@@ -102,41 +102,40 @@ document.addEventListener('DOMContentLoaded', function() {
     {% endif %}
 
     <div>
-        <h3>Grupy:</h3>
-        <ul>
-            {% for group in user.user_groups.all %}
-                <li>{{ group.name }}</li>
-            {% empty %}
-                <li>{{ user.username }} nie należy do żadnych grup.</li>
-            {% endfor %}
-        </ul>
-    </ul>
-    </div>
-
-    {% block content %}
-        {% for post in posts %}
-            <div class="post">
-                <p>{{ post.author }} <small>{{ post.created_at }}</small></p>
-                <p>{{ post.content }}</p>
-
-                <button id="like-button-{{ post.id }}" type="button" onclick="likePost({{ post.id }});">Lubię to!</button>
-                <span id="like-count-{{ post.id }}">{{ post.likes.count }}</span><br>
-
-                {% for comment in post.comments.all %}
-                    {{ comment.author.username }} <span>  </span> {{ comment.created_at }}
-                    <p>{{ comment.content }}</p>
-                {% endfor %}
-
-                <form action="{% url 'post_management:add_comment_to_post' post.id %}" method="post">
-                    {% csrf_token %}
-                    <input type="text" name="content" placeholder="Dodaj komentarz...">
-                    <button type="submit">Komentuj</button>
-                </form>
-            </div>
+    <h3>Grupy:</h3>
+    <ul>
+        {% for group in user.user_groups.all %}
+            <li><a href="{% url 'group_management:group_detail' group_slug=group.slug %}">{{ group.name }}</a></li>
         {% empty %}
-            <p>{% if is_own_profile %}Nie znaleziono Twoich postów.{% else %}Nie znaleziono postów użytkownika {{ user.username }}.{% endif %}</p>
+            <li>{{ user.username }} nie należy do żadnych grup.</li>
         {% endfor %}
-    {% endblock %}
+    </ul>
+</div>
+    {% block content %}
+    {% for post in posts %}
+        <div class="post">
+            <p>{{ post.author }} <small>{{ post.created_at }}</small></p>
+            <p>{{ post.content }}</p>
+
+            <button id="like-button-{{ post.id }}" type="button" onclick="likePost({{ post.id }});">Lubię to!</button>
+            <span id="like-count-{{ post.id }}">{{ post.likes.count }}</span><br>
+
+            {% for comment in post.comments.all %}
+                {{ comment.author.username }} <span>  </span> {{ comment.created_at }}
+                <p>{{ comment.content }}</p>
+            {% endfor %}
+
+            <form action="{% url 'post_management:add_comment_to_post' post.id %}" method="post">
+                {% csrf_token %}
+                <input type="text" name="content" placeholder="Dodaj komentarz...">
+                <button type="submit">Komentuj</button>
+            </form>
+        </div>
+    {% empty %}
+        <p>{% if is_own_profile %}Nie znaleziono Twoich postów.{% else %}Nie znaleziono postów użytkownika {{ user.username }}.{% endif %}</p>
+    {% endfor %}
+{% endblock %}
+
 
     <script src="{% static 'js/likes.js' %}"></script>
     <script>

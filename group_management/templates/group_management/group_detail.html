@@ -23,7 +23,7 @@
 {% if user_is_moderator %}
     <div class="moderator-panel">
         <h2>Panel Moderatora</h2>
-        <a href="{% url 'group_management:edit_group' group.id %}">Edytuj Grupę</a>
+        <a href="{% url 'group_management:edit_group' group.slug %}">Edytuj Grupę</a>
         <h3>Członkowie Grupy:</h3>
         <ul>
             {% for member in members %}
