@@ -24,6 +24,70 @@
         <p>{{ user.username }}</p>
         <p>{{ user.profile.bio }}</p>
     </div>
+    {% if not is_own_profile %}
+    {% if not is_own_profile %}
+    <button class="follow-button" data-username="{{ user.username }}">
+        {% if request.user in user.followers.all %}
+            Przestań Obserwować
+        {% else %}
+            Obserwuj
+        {% endif %}
+    </button>
+{% endif %}
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var username = "{{ user.username }}";
+    var followButton = document.querySelector('.follow-button');
+
+    // Wygeneruj URL z placeholderem w Django, a potem zamień go w JavaScript
+    var checkFollowStatusUrl = "{% url 'user_management:check_follow_status' 'REPLACE_USERNAME' %}".replace('REPLACE_USERNAME', username);
+
+    // Sprawdzanie stanu obserwacji przy ładowaniu strony
+    fetch(checkFollowStatusUrl, {
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.is_following) {
+            followButton.textContent = 'Przestań Obserwować';
+        } else {
+            followButton.textContent = 'Obserwuj';
+        }
+    })
+    .catch(error => console.error('Error:', error));
+
+    // Obsługa kliknięcia przycisku
+    followButton.addEventListener('click', function() {
+        var followUserUrl = "{% url 'user_management:follow_user' 'REPLACE_USERNAME' %}".replace('REPLACE_USERNAME', username);
+
+        fetch(followUserUrl, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'ok') {
+                if (data.action === 'followed') {
+                    followButton.textContent = 'Przestań Obserwować';
+                } else if (data.action === 'unfollowed') {
+                    followButton.textContent = 'Obserwuj';
+                }
+                document.getElementById('followers-count').textContent = 'Liczba obserwujących: ' + data.followers_count;
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+});
+</script>
+
+{% endif %}
+<p id="followers-count">Liczba obserwujących: {{ user.followers.count }}</p>
+<p>Liczba obserwowanych: {{ user.following.count }}</p>
 
     {% if is_own_profile %}
         <div>

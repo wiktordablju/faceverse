@@ -2,10 +2,14 @@ from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views.decorators.http import require_POST
+
 from post_management.forms import PostForm
 from post_management.models import Post
 from user_management.forms import ProfileForm, UserEditForm
+from user_management.models import Follow
 
 
 @login_required(login_url='core:welcome')
@@ -26,6 +30,7 @@ def logout_view(request):
 @login_required(login_url='core:welcome')
 def profile(request, username):
     user = get_object_or_404(User, username=username)
+    profile_user = get_object_or_404(User, username=username)
     user_posts = Post.objects.filter(author=user, group__isnull=True).order_by('-created_at')
     user_groups = user.user_groups.all()
     form = PostForm()
@@ -36,7 +41,8 @@ def profile(request, username):
         'posts': user_posts,
         'user_groups': user_groups,
         'is_own_profile': is_own_profile,
-        'form': form
+        'form': form,
+        'profile_user': profile_user
     }
     return render(request, 'user_management/profile.html', context)
 
@@ -59,3 +65,28 @@ def edit_profile(request):
         'user_form': user_form,
         'profile_form': profile_form
     })
+
+
+@login_required
+@require_POST
+def follow_user(request, username):
+    user_to_follow = get_object_or_404(User, username=username)
+
+    if request.user != user_to_follow:
+        follow, created = Follow.objects.get_or_create(follower=request.user, followed=user_to_follow)
+        if not created:
+            follow.delete()
+            action = 'unfollowed'
+        else:
+            action = 'followed'
+    else:
+        action = 'self'
+
+    followers_count = user_to_follow.followers.count()  # Liczba obserwujących
+    return JsonResponse({'status': 'ok', 'action': action, 'followers_count': followers_count})
+
+@login_required
+def check_follow_status(request, username):
+    user_to_check = get_object_or_404(User, username=username)
+    is_following = Follow.objects.filter(follower=request.user, followed=user_to_check).exists()
+    return JsonResponse({'is_following': is_following})

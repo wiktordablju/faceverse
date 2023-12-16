@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
@@ -24,11 +25,12 @@ def welcome(request):
 
 @login_required(login_url='core:welcome')
 def home(request):
-    # Pobierz tylko posty, których jesteś autorem
-    user_posts = Post.objects.filter(author=request.user).order_by('-created_at')
+    followed_users = User.objects.filter(followers__follower=request.user)
+    user_posts = Post.objects.filter(author__in=followed_users | User.objects.filter(username=request.user.username)).distinct().order_by('-created_at')
+
     form = PostForm()
     context = {
         'form': form,
-        'posts': user_posts  # Przekaż tylko posty autora do kontekstu
+        'posts': user_posts
     }
     return render(request, 'core/home.html', context)
