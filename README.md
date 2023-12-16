@@ -1,7 +1,5 @@
 ### todo:
 
-- followanie ludzi, wyswietlaja sie wtedy posty na wallu
-- zarzadzanie postami (edycja postu, komentarza, jako moderator mozliwosc usuniecia komentarza kazdego uzytkownika ktory moderatorem nie jest)
 - przetlumaczenie loginow i rejestracji
 - przy postach wyswietla sie twoje profilowe, po kliknieciu przekierowuje cie na profil
 - qol 
@@ -17,3 +15,4 @@
 
 - przyszlosciowo
   - wyszukiwarka ludzi
+  - zarzadzanie postami (edycja postu, komentarza, jako moderator mozliwosc usuniecia komentarza kazdego uzytkownika ktory moderatorem nie jest)
