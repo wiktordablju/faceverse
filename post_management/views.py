@@ -1,10 +1,11 @@
-from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
+from django.http import JsonResponse, HttpResponseRedirect, Http404
 from django.views.decorators.http import require_POST
+from django.contrib.auth.decorators import login_required
 from .forms import PostForm, CommentForm, GroupPostForm
 from .models import Post
 from group_management.models import Group
+
 
 def create_post(request):
     redirect_url = request.META.get('HTTP_REFERER', 'user_management:profile')
@@ -15,7 +16,7 @@ def create_post(request):
             post = form.save(commit=False)
             post.author = request.user
             post.save()
-            return redirect(redirect_url)  # Przekieruj na poprzednią stronę
+            return redirect(redirect_url)
     else:
         form = PostForm()
 
@@ -24,12 +25,13 @@ def create_post(request):
     }
     return render(request, 'post_management/create_post.html', context)
 
+
 @login_required
-def create_group_post(request, group_slug):  # Zmienione na 'group_slug'
+def create_group_post(request, group_slug):
     try:
-        group = Group.objects.get(slug=group_slug)  # Użyj sluga grupy
+        group = Group.objects.get(slug=group_slug)
     except Group.DoesNotExist:
-        raise Http404("Grupa o danym slugu nie istnieje")  # Rzuć wyjątek 404, jeśli grupa nie istnieje
+        raise Http404("Grupa o danym slugu nie istnieje")
 
     if request.method == 'POST':
         form = GroupPostForm(request.POST)
@@ -38,11 +40,12 @@ def create_group_post(request, group_slug):  # Zmienione na 'group_slug'
             post.author = request.user
             post.group = group
             post.save()
-            return redirect('group_management:group_detail', group_slug=group_slug)  # Przekieruj na szczegóły grupy
+            return redirect('group_management:group_detail', group_slug=group_slug)
 
     else:
         form = GroupPostForm()
     return render(request, 'post_management/create_group_post.html', {'form': form, 'group_slug': group_slug})
+
 
 @login_required
 @require_POST
@@ -57,13 +60,14 @@ def like_post(request):
         is_liked = True
     return JsonResponse({'likes_count': post.likes.count(), 'is_liked': is_liked})
 
+
 def add_comment_to_post(request, post_id):
     post = get_object_or_404(Post, id=post_id)
 
     if request.method == 'POST':
         form = CommentForm(request.POST)
 
-        if form.is_valid() and form.cleaned_data['content']:  # Sprawdź, czy pole komentarza nie jest puste
+        if form.is_valid() and form.cleaned_data['content']:
             comment = form.save(commit=False)
             comment.post = post
             comment.author = request.user

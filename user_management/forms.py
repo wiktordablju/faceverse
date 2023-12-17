@@ -4,6 +4,8 @@ from .models import Profile
 
 
 class ProfileForm(forms.ModelForm):
+    profile_image = forms.ImageField(widget=forms.FileInput, required=False)
+
     class Meta:
         model = Profile
         fields = ['bio', 'profile_image']

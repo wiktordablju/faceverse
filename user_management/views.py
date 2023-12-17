@@ -1,11 +1,10 @@
 from django.contrib import messages
+from django.http import JsonResponse
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.http import JsonResponse
-from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
-
 from post_management.forms import PostForm
 from post_management.models import Post
 from user_management.forms import ProfileForm, UserEditForm
@@ -56,7 +55,6 @@ def edit_profile(request):
             user_form.save()
             profile_form.save()
             messages.success(request, 'Twój profil został zaktualizowany.')
-            # Zmodyfikowane przekierowanie z nazwą użytkownika
             return redirect('user_management:profile', username=request.user.username)
     else:
         user_form = UserEditForm(instance=request.user)
@@ -83,7 +81,7 @@ def follow_user(request, username):
     else:
         action = 'self'
 
-    followers_count = user_to_follow.followers.count()  # Liczba obserwujących
+    followers_count = user_to_follow.followers.count()
     return JsonResponse({'status': 'ok', 'action': action, 'followers_count': followers_count})
 
 

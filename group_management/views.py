@@ -1,11 +1,10 @@
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect, get_object_or_404
-from post_management.models import Post
 from .forms import GroupForm, GroupEditForm
 from .models import Group, User
+from post_management.models import Post
 from post_management.forms import GroupPostForm
-from django.utils.text import slugify  # Dodane importowanie slugify
 
 
 @login_required
@@ -25,8 +24,8 @@ def groups(request):
 
 
 @login_required
-def group_detail(request, group_slug):  # Zmieniono group_id na group_slug
-    group = get_object_or_404(Group, slug=group_slug)  # Zmieniono ID na slug
+def group_detail(request, group_slug):
+    group = get_object_or_404(Group, slug=group_slug)
     user_is_member = request.user in group.members.all()
     user_is_moderator = request.user in group.moderators.all()
 
@@ -49,7 +48,7 @@ def group_detail(request, group_slug):  # Zmieniono group_id na group_slug
                 post.group = group
                 post.save()
                 return redirect('group_management:group_detail',
-                                group_slug=group.slug)  # Zmieniono group_id na group_slug
+                                group_slug=group.slug)
 
     post_form = GroupPostForm() if user_is_member else None
     posts = Post.objects.filter(group=group).order_by('-created_at') if user_is_member else []
@@ -66,18 +65,18 @@ def group_detail(request, group_slug):  # Zmieniono group_id na group_slug
 
 
 @login_required
-def edit_group(request, group_slug):  # Zmieniono group_id na group_slug
-    group = get_object_or_404(Group, slug=group_slug)  # Zmieniono ID na slug
+def edit_group(request, group_slug):
+    group = get_object_or_404(Group, slug=group_slug)
 
     if request.user not in group.moderators.all():
-        return redirect('group_management:group_detail', group_slug=group.slug)  # Zmieniono group_id na group_slug
+        return redirect('group_management:group_detail', group_slug=group.slug)
 
     if request.method == 'POST':
         form = GroupEditForm(request.POST, request.FILES, instance=group)
         if form.is_valid():
             form.save()
             messages.success(request, 'Grupa została zaktualizowana.')
-            return redirect('group_management:group_detail', group_slug=group.slug)  # Zmieniono group_id na group_slug
+            return redirect('group_management:group_detail', group_slug=group.slug)
     else:
         form = GroupEditForm(instance=group)
 
