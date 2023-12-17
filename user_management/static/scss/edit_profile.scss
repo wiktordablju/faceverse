@@ -1,0 +1,22 @@
+@use "./reset";
+
+body {
+	display: flex;
+	flex-direction: column;
+	background-color: #1c1e21;
+	color: #e4e6eb;
+	font-family: "Montserrat", sans-serif;
+	font-size: 1.5rem;
+	padding-top: 4rem; // Add padding at the top to prevent content from being hidden under the nav
+}
+
+a:visited,
+a {
+	text-decoration: none;
+	color: #3578e5;
+	transition: 0.3s;
+}
+
+a:hover {
+	color: #552ce9;
+}

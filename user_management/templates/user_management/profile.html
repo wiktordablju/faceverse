@@ -1,31 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Profil użytkownika {{ user.username }}</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
-</head>
+	<head>
+		<meta charset="UTF-8" />
+		<title>faceverse | {{ user.username }}</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&display=swap"
+			rel="stylesheet"
+		/>
+		{% load static %}
+		<link rel="stylesheet" href="{% static 'css/profile.css' %}" />
+	</head>
 <body>
-    <h1>Profil: {{ user.username }}</h1>
-    <a href="{% url 'user_management:logout' %}">Wyloguj</a>
 
-    <nav>
-        <ul>
-            <li><a href="{% url 'core:home' %}">Strona główna</a></li>
-            <li><a href="{% url 'group_management:groups' %}">Grupy</a></li>
-            <li><a href="{% url 'user_management:friends' %}">Moi znajomi</a></li>
-            <li><a href="{% url 'user_management:profile' request.user.username %}">Mój profil</a></li>
-        </ul>
-    </nav>
+   <header class="top-nav">
+			<div class="top-nav__logo">faceverse</div>
+			<nav class="top-nav__links">
+                    <a href="{% url 'user_management:logout' %}">Wyloguj</a>
 
-    <div class="profile-container">
-        <img src="{{ user.profile.profile_image.url }}" alt="Zdjęcie Profilowe">
-        <p>{{ user.username }}</p>
-        <p>{{ user.profile.bio }}</p>
-    </div>
-    {% if not is_own_profile %}
-    {% if not is_own_profile %}
+				<a href="{% url 'core:home' %}" class="top-nav__link">Strona główna</a>
+				<a href="{% url 'group_management:groups' %}" class="top-nav__link"
+					>Grupy</a
+				>
+				<a
+					href="{% url 'user_management:profile' request.user.username %}"
+					class="top-nav__link"
+					>Mój profil</a
+				>
+			</nav>
+		</header>
+
+     <!-- Profile Section -->
+    <div class="profile-section">
+        <div class="profile-header">
+            <img src="{{ user.profile.profile_image.url }}" alt="Profile Picture" class="profile-picture">
+            <div class="profile-info">
+                <h1>{{ user.username }}</h1>
+                <p id="followers-count">Followerzy: {{ user.followers.count }}</p>
+                <p id="following-count">Followuje: {{ user.following.count }}</p>
+                 {% if not is_own_profile %}
     <button class="follow-button" data-username="{{ user.username }}">
         {% if request.user in user.followers.all %}
             Przestań Obserwować
@@ -35,6 +49,23 @@
     </button>
 {% endif %}
 
+            </div>
+        </div>
+
+        <!-- User Groups List -->
+        <div class="user-groups">
+            <h3>            <a href="{% url 'user_management:edit_profile' %}">Edytuj Profil</a>
+</h3>
+            <h3>Grupy użytkownika:</h3>
+
+                {% for group in user.user_groups.all %}
+
+                    <p><a href="{% url 'group_management:group_detail' group.slug %}">{{ group.name }}</a></p>
+                {% empty %}
+                    <p>Nie znaleziono grup</p>
+                {% endfor %}
+
+        </div>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     var username = "{{ user.username }}";
@@ -85,13 +116,10 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-{% endif %}
-<p id="followers-count">Liczba obserwujących: {{ user.followers.count }}</p>
-<p>Liczba obserwowanych: {{ user.following.count }}</p>
+
 
     {% if is_own_profile %}
         <div>
-            <a href="{% url 'user_management:edit_profile' %}">Edytuj Profil</a>
 
             <form method="post" action="{% url 'post_management:create_post' %}">
         {% csrf_token %}
@@ -101,16 +129,7 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
     {% endif %}
 
-    <div>
-    <h3>Grupy:</h3>
-    <ul>
-        {% for group in user.user_groups.all %}
-            <li><a href="{% url 'group_management:group_detail' group_slug=group.slug %}">{{ group.name }}</a></li>
-        {% empty %}
-            <li>{{ user.username }} nie należy do żadnych grup.</li>
-        {% endfor %}
-    </ul>
-</div>
+    <div class="posts-section">
     {% block content %}
     {% for post in posts %}
         <div class="post">
@@ -136,7 +155,7 @@ document.addEventListener('DOMContentLoaded', function() {
     {% endfor %}
 {% endblock %}
 
-
+    </div>
     <script src="{% static 'js/likes.js' %}"></script>
     <script>
         var likePostUrl = '{% url "post_management:like_post" %}';
