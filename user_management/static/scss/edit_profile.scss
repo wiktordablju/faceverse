@@ -1,0 +1,74 @@
+@use "./reset";
+
+body {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	background-color: #1c1e21;
+	color: #e4e6eb;
+	font-family: "Montserrat", sans-serif;
+	font-size: 2rem;
+	padding-top: 4rem; // Add padding at the top to prevent content from being hidden under the nav
+}
+
+h1 {
+	color: #e4e6eb;
+	margin-bottom: 2rem;
+}
+
+form {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	max-width: 500px; // Limit the width of the form
+	padding: 1rem;
+	background-color: #333;
+	border-radius: 10px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+	label {
+		margin-top: 1rem;
+		font-weight: 500;
+	}
+
+	input,
+	textarea {
+		width: 100%;
+		padding: 0.5rem;
+		margin-top: 0.5rem;
+		border: none;
+		border-radius: 5px;
+	}
+
+	.error {
+		color: #ff6b6b;
+	}
+
+	button {
+		margin-top: 2rem;
+		padding: 0.5rem;
+		border: none;
+		border-radius: 5px;
+		background-color: #3578e5;
+		color: white;
+		cursor: pointer;
+		transition: background-color 0.3s;
+
+		&:hover {
+			background-color: #2859c1;
+		}
+	}
+}
+
+a:visited,
+a {
+	text-decoration: none;
+	color: #3578e5;
+	transition: color 0.3s;
+	margin-top: 1rem;
+}
+
+a:hover {
+	color: #552ce9;
+}
