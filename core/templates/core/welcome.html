@@ -1,17 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Strona Powitalna</title>
+    <meta charset="UTF-8">
+    <title>Strona powitalna</title>
 </head>
 <body>
-    <h1>Witaj na Stronie Powitalnej</h1>
-    <h2>Logowanie</h2>
-     <form method="post" action="{% url 'core:welcome' %}">
-      {% csrf_token %}
-      {{ form.as_p }}
-      <button type="submit">Zaloguj się</button>
-    </form>
-    <p>Nie masz konta? <a href="{% url 'authentication:register' %}">Zarejestruj się</a></p>
-
+<div class="welcome-page">
+        <div class="welcome-page__header">
+            <h1 class="welcome-page__title">Witaj na Stronie Powitalnej</h1>
+        </div>
+        <div class="welcome-page__login-form">
+            <h2 class="welcome-page__login-title">Logowanie</h2>
+            <form method="post" action="{% url 'core:welcome' %}" class="form">
+                {% csrf_token %}
+                <div class="form__group">
+                    {{ form.as_p }}
+                </div>
+                <button type="submit" class="form__submit-button">Zaloguj się</button>
+            </form>
+            <p class="welcome-page__register">
+                Nie masz konta? <a href="{% url 'authentication:register' %}" class="welcome-page__register-link">Zarejestruj się</a>
+            </p>
+        </div>
+    </div>
 </body>
 </html>
