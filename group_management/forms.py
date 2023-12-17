@@ -16,3 +16,8 @@ class GroupEditForm(forms.ModelForm):
     class Meta:
         model = Group
         fields = ['name', 'description', 'profile_image']
+        labels = {
+            'name': 'Nazwa',
+            'description': 'Opis grupy',
+            'profile_image': 'Baner grupy'
+        }
