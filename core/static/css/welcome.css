@@ -1,0 +1,137 @@
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+html {
+  font-size: 62.5%;
+  scroll-behavior: smooth;
+}
+
+a {
+  text-decoration: none;
+}
+
+input,
+button,
+textarea,
+select {
+  font-family: inherit;
+}
+
+button {
+  border: none;
+  cursor: pointer;
+}
+
+textarea {
+  resize: vertical;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+body {
+  background-color: #1c1e21;
+  color: #e4e6eb;
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.5rem;
+}
+
+a:visited {
+  text-decoration: none;
+  color: white;
+}
+
+.welcome-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+.welcome-page__header {
+  margin-bottom: 30px;
+}
+.welcome-page__title {
+  color: #e4e6eb;
+  text-align: center;
+  font-size: 5rem;
+}
+.welcome-page__login-title {
+  margin-bottom: 10px;
+}
+.welcome-page__login-form {
+  background-color: #242526;
+  padding: 40px;
+  width: 30%;
+  min-width: 300px;
+  border: 1px solid #3a3b3c;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+.welcome-page__login-form__login-title {
+  color: #e4e6eb;
+  margin-bottom: 30px;
+}
+.welcome-page .form__group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 15px;
+}
+.welcome-page .form__group label {
+  min-width: 100px;
+  color: #e4e6eb;
+}
+.welcome-page .form__group input {
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid #3a3b3c;
+  background-color: #3a3b3c;
+  color: #e4e6eb;
+  border-radius: 6px;
+}
+.welcome-page .form__group input:focus {
+  outline: none;
+  border-color: #3578e5;
+}
+.welcome-page .form__submit-button {
+  background-color: #1877f2;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 100%;
+}
+.welcome-page .form__submit-button:hover {
+  background-color: #165db6;
+}
+.welcome-page__register {
+  margin-top: 30px;
+  color: #b0b3b8;
+}
+.welcome-page__register__register-link {
+  color: #1877f2;
+  font-weight: bold;
+  padding: 5px;
+  border-radius: 4px;
+  transition: color 0.3s, background-color 0.3s;
+}
+.welcome-page__register__register-link:hover {
+  background-color: #3a3b3c;
+  color: #e4e6eb;
+  text-decoration: none;
+}/*# sourceMappingURL=welcome.css.map */

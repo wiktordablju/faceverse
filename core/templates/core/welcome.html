@@ -1,27 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Strona powitalna</title>
-</head>
-<body>
-<div class="welcome-page">
-        <div class="welcome-page__header">
-            <h1 class="welcome-page__title">Witaj na Stronie Powitalnej</h1>
-        </div>
-        <div class="welcome-page__login-form">
-            <h2 class="welcome-page__login-title">Logowanie</h2>
-            <form method="post" action="{% url 'core:welcome' %}" class="form">
-                {% csrf_token %}
-                <div class="form__group">
-                    {{ form.as_p }}
-                </div>
-                <button type="submit" class="form__submit-button">Zaloguj się</button>
-            </form>
-            <p class="welcome-page__register">
-                Nie masz konta? <a href="{% url 'authentication:register' %}" class="welcome-page__register-link">Zarejestruj się</a>
-            </p>
-        </div>
-    </div>
-</body>
+<html lang="pl">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>faceverse</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&display=swap"
+			rel="stylesheet"
+		/>
+		{% load static %}
+		<link rel="stylesheet" href="{% static 'css/welcome.css' %}" />
+	</head>
+	<body>
+		<div class="welcome-page">
+			<div class="welcome-page__header">
+				<h1 class="welcome-page__title">faceverse</h1>
+				<p>
+					Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis,
+					eveniet.
+				</p>
+			</div>
+			<div class="welcome-page__login-form">
+				<h2 class="welcome-page__login-title">Logowanie</h2>
+				<form method="post" action="{% url 'core:welcome' %}" class="form">
+					{% csrf_token %}
+					<div class="form__group">{{ form.as_p }}</div>
+					<button type="submit" class="form__submit-button">Zaloguj się</button>
+				</form>
+				<p class="welcome-page__register">
+					Nie masz konta?
+					<a
+						href="{% url 'authentication:register' %}"
+						class="welcome-page__register-link"
+						>Zarejestruj się</a
+					>
+				</p>
+			</div>
+		</div>
+	</body>
 </html>

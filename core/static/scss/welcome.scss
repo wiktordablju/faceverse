@@ -1,66 +1,113 @@
-.welcome-page {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-
-    &__header {
-        margin-bottom: 30px;
-    }
-
-    &__title {
-        color: #3b5998; // Kolor logo Facebook
-        text-align: center;
-    }
-
-    &__login-form {
-        background-color: white;
-        padding: 20px;
-        border: 1px solid #dddfe2;
-        border-radius: 8px;
-
-        &__login-title {
-            margin-bottom: 20px;
-        }
-    }
-
-    .form {
-        &__group {
-            margin-bottom: 15px;
-        }
-
-        &__submit-button {
-            background-color: #1877f2;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s;
-
-            &:hover {
-                background-color: #165db6;
-            }
-        }
-    }
-
-    &__register {
-        margin-top: 20px;
-
-        &__register-link {
-            color: #1877f2;
-            text-decoration: none;
-
-            &:hover {
-                text-decoration: underline;
-            }
-        }
-    }
-}
+@use "./reset";
 
 body {
-    background-color: #f0f2f5;
-    font-family: Arial, sans-serif;
+	background-color: #1c1e21; // Dark background for dark mode
+	color: #e4e6eb; // Lighter text for visibility
+	font-family: "Montserrat", sans-serif;
+	font-size: 1.5rem;
+}
+
+a:visited {
+	text-decoration: none;
+	color: white;
+}
+
+.welcome-page {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 100vh;
+
+	&__header {
+		margin-bottom: 30px;
+	}
+
+	&__title {
+		color: #e4e6eb;
+		text-align: center;
+		font-size: 5rem;
+	}
+
+	&__login-title {
+		margin-bottom: 10px;
+	}
+
+	&__login-form {
+		background-color: #242526; // Dark background for the form
+		padding: 40px; // Increased padding
+		width: 30%; // Specify width for the form
+		min-width: 300px; // Minimum width for smaller screens
+		border: 1px solid #3a3b3c; // Dark border for the form
+		border-radius: 8px;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); // Add a subtle shadow
+
+		&__login-title {
+			color: #e4e6eb;
+			margin-bottom: 30px;
+		}
+	}
+
+	.form {
+		&__group {
+			display: flex;
+			flex-direction: column;
+			align-items: flex-start;
+			margin-bottom: 15px;
+
+			label {
+				min-width: 100px; // Ensure labels are the same width
+				color: #e4e6eb; // Lighter label for visibility
+			}
+
+			input {
+				margin-top: 10px;
+
+				padding: 10px;
+				border: 1px solid #3a3b3c; // Dark border for inputs
+				background-color: #3a3b3c; // Dark background for inputs
+				color: #e4e6eb; // Light text for input
+				border-radius: 6px;
+
+				&:focus {
+					outline: none;
+					border-color: #3578e5; // Highlight color on focus
+				}
+			}
+		}
+
+		&__submit-button {
+			background-color: #1877f2;
+			color: white;
+			border: none;
+			padding: 12px 24px;
+			border-radius: 6px;
+			cursor: pointer;
+			transition: background-color 0.3s;
+			width: 100%; // Button width to match inputs
+
+			&:hover {
+				background-color: #165db6;
+			}
+		}
+	}
+
+	&__register {
+		margin-top: 30px;
+		color: #b0b3b8; // Color for 'register' link text
+
+		&__register-link {
+			color: #1877f2;
+			font-weight: bold; // Make the link bold
+			padding: 5px; // Padding for better touch
+			border-radius: 4px; // Rounded corners for aesthetics
+			transition: color 0.3s, background-color 0.3s;
+
+			&:hover {
+				background-color: #3a3b3c; // Dark background on hover
+				color: #e4e6eb; // Light text on hover
+				text-decoration: none; // No underline on hover
+			}
+		}
+	}
 }
