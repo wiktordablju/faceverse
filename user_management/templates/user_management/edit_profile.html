@@ -1,9 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Edytuj Profil</title>
-</head>
+	<head>
+		<meta charset="UTF-8" />
+		<title>faceverse | {{ user.username }}</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&display=swap"
+			rel="stylesheet"
+		/>
+		{% load static %}
+		<link rel="stylesheet" href="{% static 'css/edit_profile.css' %}" />
+	</head>
 <body>
     <h1>Edytuj Profil</h1>
     <form method="post" enctype="multipart/form-data">

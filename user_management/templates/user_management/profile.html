@@ -37,6 +37,7 @@
             <img src="{{ user.profile.profile_image.url }}" alt="Profile Picture" class="profile-picture">
             <div class="profile-info">
                 <h1>{{ user.username }}</h1>
+
                 <p id="followers-count">Followerzy: {{ user.followers.count }}</p>
                 <p id="following-count">Followuje: {{ user.following.count }}</p>
                  {% if not is_own_profile %}
@@ -54,6 +55,7 @@
 
         <!-- User Groups List -->
         <div class="user-groups">
+            <h5> <p>{{ user.profile.bio }}</p></h5>
             <h3>            <a href="{% url 'user_management:edit_profile' %}">Edytuj Profil</a>
 </h3>
             <h3>Grupy użytkownika:</h3>
