@@ -1,8 +1,49 @@
-.post {
-border: 1px solid black;
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-img {
-    max-height: 100px;
-    max-width: 100px;
+html,
+body {
+  height: 100%;
 }
+
+html {
+  font-size: 62.5%;
+  scroll-behavior: smooth;
+}
+
+a {
+  text-decoration: none;
+}
+
+input,
+button,
+textarea,
+select {
+  font-family: inherit;
+}
+
+button {
+  border: none;
+  cursor: pointer;
+}
+
+textarea {
+  resize: vertical;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+body {
+  background-color: #1c1e21;
+  color: #e4e6eb;
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.5rem;
+}/*# sourceMappingURL=home.css.map */

@@ -1,14 +1,43 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <title>Rejestracja</title>
-</head>
-<body>
-    <h1>Rejestracja</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Zarejestruj się</button>
-    </form>
-</body>
+<html lang="pl">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>faceverse | rejestracja</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&display=swap"
+			rel="stylesheet"
+		/>
+		{% load static %}
+		<link rel="stylesheet" href="{% static 'css/register.css' %}" />
+	</head>
+	<body>
+		<div class="register">
+			<h1 class="register__title">Rejestracja</h1>
+			<form method="post" class="register__form">
+				{% csrf_token %}
+				<div class="register__form__group">
+					{{ form.username.label_tag }} {{ form.username }}
+				</div>
+
+				<div class="register__form__group">
+					{{ form.password1.label_tag }} {{ form.password1 }}
+				</div>
+				<div class="register__form__group">
+					{{ form.password2.label_tag }} {{ form.password2 }}
+				</div>
+				<button type="submit" class="register__form__submit-button">
+					Zarejestruj się
+				</button>
+				<p class="register__login">
+					Masz już konto?
+					<a href="{% url 'core:welcome' %}" class="register__login-link"
+						>Zaloguj się</a
+					>
+				</p>
+			</form>
+		</div>
+	</body>
 </html>
