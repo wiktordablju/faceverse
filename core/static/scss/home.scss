@@ -1,8 +1,247 @@
 @use "./reset";
 
 body {
+	display: flex;
+	flex-direction: column;
 	background-color: #1c1e21;
 	color: #e4e6eb;
 	font-family: "Montserrat", sans-serif;
 	font-size: 1.5rem;
+	padding-top: 4rem; // Add padding at the top to prevent content from being hidden under the nav
+}
+
+a:visited,
+a {
+	text-decoration: none;
+	color: #3578e5;
+	transition: 0.3s;
+}
+
+a:hover {
+	color: #552ce9;
+}
+
+.top-nav {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background: #333;
+	padding: 1rem 2rem;
+	position: fixed; // Changed from sticky to fixed
+	top: 0;
+	z-index: 10;
+	width: 100%;
+}
+
+.sidebar {
+	background: #242526;
+	padding: 1rem;
+	width: 250px;
+	position: fixed; // Make sure sidebar is fixed if nav is fixed
+	top: 4rem; // Adjust the top position to below the nav
+	bottom: 0;
+	overflow-y: auto;
+}
+
+.main-content {
+	flex-grow: 1;
+	margin-left: 250px; // sidebar width
+	padding: 2rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: calc(100% - 250px); // Adjust the width to account for the sidebar
+}
+
+.post-form,
+.post {
+	background: #3a3b3c;
+	border-radius: 8px;
+	width: 100%;
+	max-width: 600px;
+	margin-top: 2rem;
+	padding: 2rem; // Increased padding
+	font-size: 1.6rem; // Slightly increased font size for better readability
+}
+
+// Adjusting image size in the post
+.post img.profile-thumbnail,
+.comment img.profile-thumbnail {
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	object-fit: cover;
+	margin-right: 1rem;
+}
+
+// Styles for the user thumbnail in the form
+.user-thumbnail {
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	object-fit: cover;
+}
+.post-form {
+	background: #3a3b3c;
+	border-radius: 8px;
+	padding: 2rem; // Increased padding for taller form
+	display: flex;
+	flex-direction: column;
+	align-items: center; // This will center-align the child elements
+	width: 100%;
+	max-width: 600px; // Max width of the form
+	margin: 2rem auto; // Center the form on the page
+
+	&__input {
+		width: 100%; // full width of the form
+		border: none;
+		border-radius: 18px;
+		padding: 1.5rem; // Increase padding for taller input box
+		margin-bottom: 1rem;
+		font-size: 1.4rem;
+
+		&:focus {
+			outline: 2px solid #3578e5;
+		}
+	}
+
+	&__submit {
+		background-color: #1877f2;
+		color: white;
+		margin-top: 30px;
+		padding: 1rem 2rem;
+		font-size: 1.4rem;
+		border-radius: 18px;
+		border: none;
+		cursor: pointer;
+		width: 100%; // Match the width of the input field
+		max-width: 200px; // But don't let it get too wide
+
+		&:hover {
+			background-color: darken(#1877f2, 10%);
+		}
+	}
+
+	label {
+		display: none; // Hide the label
+	}
+	textarea {
+		resize: none;
+		padding: 5px;
+	}
+}
+
+.post {
+	background: #3a3b3c;
+	border-radius: 8px;
+	margin-bottom: 2rem;
+	padding: 1rem;
+	width: 100%;
+	margin-bottom: 2rem; // Space between posts
+
+	img.profile-thumbnail {
+		width: 40px;
+		height: 40px;
+		border-radius: 50%;
+		margin-right: 1rem;
+	}
+}
+
+.comment {
+	background: #424242;
+	border-radius: 5px;
+	padding: 1rem;
+	margin-top: 1rem; // Space between comments
+	// Ensure that the width of the comment matches the input field
+	width: calc(
+		100% - 4rem
+	); // Adjust this value as necessary to align with the input field
+	margin-left: auto;
+	margin-right: auto;
+	img.profile-thumbnail {
+		width: 30px;
+		height: 30px;
+		border-radius: 50%;
+		margin-right: 0.5rem;
+	}
+}
+
+.comment {
+	width: 100%;
+	background: #424242;
+	border-radius: 5px;
+	padding: 1rem; // Increased internal padding
+	margin-top: 1rem; // Space between comments
+}
+
+// Button styling for like and comment actions
+button {
+	padding: 0.5rem 1rem;
+	margin: 1rem 0;
+	background-color: #1877f2;
+	color: white;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+
+	&:hover {
+		background-color: lighten(#1877f2, 10%);
+	}
+
+	&:focus {
+		outline: none;
+		box-shadow: 0 0 0 2px #3578e5;
+	}
+}
+
+// Like button specific styles
+.like-button {
+	display: inline-block;
+	margin-right: 0.5rem;
+}
+
+// Like count styling
+.like-count {
+	font-size: 1.2rem;
+	color: #b0b3b8;
+}
+
+// Input styling for adding comments
+input[type="text"] {
+	width: 100%;
+	padding: 1rem;
+	border-radius: 4px;
+	border: 1px solid #333;
+	background-color: #2d2d2d;
+	color: white;
+	margin-bottom: 1rem;
+
+	&:focus {
+		outline: none;
+		border-color: #3578e5;
+	}
+}
+
+form {
+	display: flex;
+	flex-direction: column;
+}
+
+button,
+input[type="text"] {
+	padding: 0.75rem 1rem; // Increased padding for better usability
+	font-size: 1.4rem; // Increased font size for better visibility
+	// No changes to other styles
+}
+
+.comment + form {
+	margin-top: 2rem; // Add space between the last comment and the input form
+}
+
+form button[type="submit"] {
+	// Same styles as the like button
+	display: block; // Take up the full width of the form
+	width: 100%;
+	margin-top: 1rem; // Space after the input field
 }
