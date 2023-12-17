@@ -1,27 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Grupy</title>
-</head>
-<body>
-    <h1>Grupy essa</h1>
-<nav>
-        <ul>
-            <li><a href="{% url 'core:home' %}">Strona główna</a></li>
-            <li><a href="{% url 'group_management:groups' %}">Grupy</a></li>
-            <li><a href="{% url 'user_management:friends' %}">Moi znajomi</a></li>
-            <li><a href="{% url 'user_management:profile' %}">Mój profil</a></li>
-        </ul>
-        </nav>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Opublikuj</button>
-</form>
-{% for group in groups %}
-    <p><a href="{% url 'group_management:group_detail' group.id %}">{{ group.name }}</a></p>
-{% endfor %}
+	<head>
+		<meta charset="UTF-8" />
+		<title>faceverse | Grupy</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&display=swap"
+			rel="stylesheet"
+		/>
+		{% load static %}
+		<link rel="stylesheet" href="{% static 'css/groups.css' %}" />
+	</head>
+	<body>
+		<header class="top-nav">
+			<div class="top-nav__logo">faceverse</div>
+			<nav class="top-nav__links">
+				<a href="{% url 'core:home' %}" class="top-nav__link">Strona główna</a>
+				<a href="{% url 'group_management:groups' %}" class="top-nav__link"
+					>Grupy</a
+				>
+				<a
+					href="{% url 'user_management:profile' user.username %}"
+					class="top-nav__link"
+					>Mój profil</a
+				>
+			</nav>
+		</header>
 
-</body>
+		<!-- Group Creation Form -->
+		<form method="post" class="group-form">
+			{% csrf_token %}
+			<div class="group-form__fields">
+				{% for field in form %}
+				<div class="group-form__field">
+					<label class="group-form__label">{{ field.label }}</label>
+					{{ field }} {% if field.help_text %}
+					<small class="form-text text-muted">{{ field.help_text }}</small>
+					{% endif %} {% for error in field.errors %}
+					<div class="alert alert-danger">{{ error }}</div>
+					{% endfor %}
+				</div>
+				{% endfor %}
+			</div>
+			<button type="submit" class="group-form__submit">Opublikuj</button>
+		</form>
+
+		<!-- List of Groups -->
+		<div class="group-list">
+			{% for group in groups %}
+			<p class="group-list__item">
+				<a href="{% url 'group_management:group_detail' group.slug %}"
+					>{{ group.name }}</a
+				>
+			</p>
+			{% endfor %}
+		</div>
+	</body>
 </html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edytuj Profil</title>
+</head>
+<body>
+    <h1>Edytuj Profil</h1>
+    <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <!-- Wyświetlenie błędów formularza -->
+    {{ user_form.non_field_errors }}
+    {{ profile_form.non_field_errors }}
+
+    <!-- Pola formularza UserEditForm -->
+    <div>
+        <label for="id_username">Nazwa użytkownika:</label>
+        {{ user_form.username.errors }}
+        {{ user_form.username }}
+    </div>
+
+    <!-- Pola formularza ProfileForm -->
+    <div>
+        <label for="id_bio">Bio:</label>
+        {{ profile_form.bio.errors }}
+        {{ profile_form.bio }}
+    </div>
+    <div>
+        <label for="id_profile_image">Zdjęcie profilowe:</label>
+        {{ profile_form.profile_image.errors }}
+        {{ profile_form.profile_image }}
+    </div>
+
+    <button type="submit">Zapisz zmiany</button>
+</form>
+
+<a href="{% url 'user_management:profile' user.username %}">Powrót do profilu</a>
+</body>
+</html>

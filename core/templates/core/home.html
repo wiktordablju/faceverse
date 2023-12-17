@@ -1,66 +1,158 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Strona Główna</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/home.css' %}">
-</head>
-<body data-like-post-url="{% url 'post_management:like_post' %}" data-csrf-token="{{ csrf_token }}">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+		/>
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title>faceverse | Strona Główna</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&display=swap"
+			rel="stylesheet"
+		/>
+		{% load static %}
+		<link rel="stylesheet" href="{% static 'css/home.css' %}" />
+	</head>
+	<body
+		data-like-post-url="{% url 'post_management:like_post' %}"
+		data-csrf-token="{{ csrf_token }}"
+	>
+		{% if user.is_authenticated %}
+		<header class="top-nav">
+			<div class="top-nav__logo">faceverse</div>
+			<nav class="top-nav__links">
+				<a href="{% url 'core:home' %}" class="top-nav__link">Strona główna</a>
+				<a href="{% url 'group_management:groups' %}" class="top-nav__link"
+					>Grupy</a
+				>
+				<a
+					href="{% url 'user_management:profile' user.username %}"
+					class="top-nav__link"
+					>Mój profil</a
+				>
+			</nav>
+		</header>
+		<aside class="sidebar">
+            <h3 class="sidebar__text">Twoje grupy:</h3>
+			{% for group in user.user_groups.all %}
+			<p class="sidebar__text"><a
+					href="{% url 'group_management:group_detail' group_slug=group.slug %}"
+					>{{ group.name }}</a
+				></p>
+				
+        </p>
+			{% empty %}
+			<p>{{ user.username }} nie należy do żadnych grup.</p>
+			{% endfor %}
+			
+		</aside>
 
-    {% if user.is_authenticated %}
-        <nav>
-            <ul>
-                <li><a href="{% url 'core:home' %}">Strona główna</a></li>
-                <li><a href="{% url 'group_management:groups' %}">Grupy</a></li>
-                <li><a href="{% url 'user_management:friends' %}">Moi znajomi</a></li>
-                <li><a href="{% url 'user_management:profile' %}">Mój profil</a></li>
-            </ul>
-        </nav>
+		<main class="main-content">
+			<form
+				method="post"
+				action="{% url 'post_management:create_post' %}"
+				class="post-form"
+			>
+				{% csrf_token %}
+				<div class="post-form__header">
+					{% if user.profile.profile_image %}
+					<img
+						src="{{ user.profile.profile_image.url }}"
+						alt="Profile picture of {{ user.username }}"
+						class="user-thumbnail"
+					/>
+					{% endif %}
 
-        <form method="post" action="{% url 'post_management:create_post' %}">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Opublikuj</button>
-        </form>
+					<p class="post-form__username">{{ user.username }}</p>
+					{{ form.content.label_tag }} {{ form.content }}
+				</div>
+				<div class="post-form__actions"></div>
+				<button type="submit" class="post-form__submit">Opublikuj post</button>
+			</form>
 
-            {% for post in posts %}
-    <div class="post">
-        <p>{{ post.author }} <small>{{ post.created_at }}</small></p>
-        <p>{{ post.content }}</p>
+			{% for post in posts %}
+			<div class="post">
+				{% if post.author.profile.profile_image %}
+				<img
+					src="{{ post.author.profile.profile_image.url }}"
+					alt="Zdjęcie profilowe {{ post.author.username }}"
+					class="profile-thumbnail"
+				/>
+				{% endif %}
+				<p>
+					<a href="{% url 'user_management:profile' post.author.username %}"
+						>{{ post.author }}</a
+					>
+					<small>{{ post.created_at }}</small>
+				</p>
+				<p>{{ post.content }}</p>
 
-        {% if post.group %}
-            <p>Grupa: {{ post.group.name }}</p>
-        {% endif %}
+				{% if post.group %}
+				<p>
+					Grupa:
+					<a
+						href="{% url 'group_management:group_detail' group_slug=post.group.slug %}"
+						>{{ post.group.name }}</a
+					>
+				</p>
+				{% endif %}
 
-        <button id="like-button-{{ post.id }}" type="button" onclick="likePost({{ post.id }});">Lubię to!</button>
-        <span id="like-count-{{ post.id }}">{{ post.likes.count }}</span><br>
+				<button
+					id="like-button-{{ post.id }}"
+					class="like-button"
+					type="button"
+					onclick="likePost({{ post.id }});"
+				>
+					Lubię to!
+				</button>
+				<span class="like-count" id="like-count-{{ post.id }}"
+					>{{ post.likes.count }}</span
+				><br />
 
-        {% for comment in post.comments.all %}
-            {{ comment.author.username }} <span>  </span> {{ comment.created_at }}
-            <p>{{ comment.content }}</p>
-        {% endfor %}
+				{% for comment in post.comments.all %}
+				<div class="comment">
+					{% if comment.author.profile.profile_image %}
+					<img
+						src="{{ comment.author.profile.profile_image.url }}"
+						alt="Zdjęcie profilowe {{ comment.author.username }}"
+						class="profile-thumbnail"
+					/>
+					{% endif %}
+					<p>
+						<a
+							href="{% url 'user_management:profile' comment.author.username %}"
+							>{{ comment.author.username }}</a
+						>
+						<span>{{ comment.created_at }}</span>
+					</p>
+					<p>{{ comment.content }}</p>
+				</div>
+				{% endfor %}
 
-        <form action="{% url 'post_management:add_comment_to_post' post.id %}" method="post">
-            {% csrf_token %}
-            <input type="text" name="content" placeholder="Dodaj komentarz...">
-            <button type="submit">Komentuj</button>
-        </form>
-    </div>
-{% empty %}
-    <p>Brak postów do wyświetlenia.</p>
-{% endfor %}
-    {% else %}
-        <p>Nie jesteś zalogowany.</p>
-    {% endif %}
+				<form
+					action="{% url 'post_management:add_comment_to_post' post.id %}"
+					method="post"
+				>
+					{% csrf_token %}
+					<input type="text" name="content" placeholder="Dodaj komentarz..." />
+					<button type="submit">Komentuj</button>
+				</form>
+			</div>
+			{% empty %}
+			<p>Brak postów do wyświetlenia.</p>
+			{% endfor %} {% else %}
+			<p>Nie jesteś zalogowany.</p>
+			{% endif %}
+		</main>
 
-    <script>
-        var likePostUrl = '{% url "post_management:like_post" %}';
-        var csrfToken = '{{ csrf_token }}';
-    </script>
-    <script src="{% static 'js/likes.js' %}"></script>
-</body>
+		<script>
+			var likePostUrl = '{% url "post_management:like_post" %}'
+			var csrfToken = "{{ csrf_token }}"
+		</script>
+		<script src="{% static 'js/likes.js' %}"></script>
+	</body>
 </html>

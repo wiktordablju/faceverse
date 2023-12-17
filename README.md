@@ -1,7 +1,5 @@
-### todo:
+### - przyszlosciowo
 
-- zarzadzanie swoim kontem + zdjecie profilowe
-- zarzadzanie grupa + zdjecie grupy
-- mozliwosc tworzenia znajomych, posty znajomych na home wallu
+- wyszukiwarka ludzi
 - zarzadzanie postami (edycja postu, komentarza, jako moderator mozliwosc usuniecia komentarza kazdego uzytkownika ktory moderatorem nie jest)
-- przetlumaczenie loginow i rejestracji
+- przekierowywanie z kazdego miejsca na welcome jak nie jestes logged in
